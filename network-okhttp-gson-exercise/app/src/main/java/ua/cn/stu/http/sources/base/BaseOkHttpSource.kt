@@ -19,6 +19,7 @@ open class BaseOkHttpSource(
 ) {
 
     val gson: Gson = config.gson
+    val client: OkHttpClient = config.client
     private val contentType = "application/json; charset=urf-8".toMediaType()
 
     suspend fun Call.suspendEnqueue(): Response {
