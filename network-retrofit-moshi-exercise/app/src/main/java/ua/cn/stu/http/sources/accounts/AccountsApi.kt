@@ -1,9 +1,25 @@
 package ua.cn.stu.http.sources.accounts
 
-// todo #5: add 4 methods for making requests related to accounts:
-//          - 'POST /sign-in'
-//          - 'POST /sign-up'
-//          - 'GET /me'
-//          - 'PUT /me'
-//          Hint: use entities located in 'ua.cn.stu.sources.accounts.entities' package
-interface AccountsApi
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.PUT
+import ua.cn.stu.http.sources.accounts.entities.GetAccountResponseEntity
+import ua.cn.stu.http.sources.accounts.entities.SignInRequestEntity
+import ua.cn.stu.http.sources.accounts.entities.SignUpRequestEntity
+import ua.cn.stu.http.sources.accounts.entities.UpdateUsernameRequestEntity
+
+interface AccountsApi {
+
+    @POST("sign-in")
+    suspend fun signIn(@Body signInRequestEntity: SignInRequestEntity): SignInRequestEntity
+
+    @POST("sign-up")
+    suspend fun signUp(@Body signUpRequestEntity: SignUpRequestEntity)
+
+    @GET("me")
+    suspend fun getAccount(): GetAccountResponseEntity
+
+    @PUT("me")
+    suspend fun setUsername(@Body usernameRequestEntity: UpdateUsernameRequestEntity)
+}
