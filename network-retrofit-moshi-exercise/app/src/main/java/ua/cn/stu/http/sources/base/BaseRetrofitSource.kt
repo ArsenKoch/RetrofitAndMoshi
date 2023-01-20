@@ -1,27 +1,46 @@
 package ua.cn.stu.http.sources.base
 
+import com.squareup.moshi.JsonDataException
+import com.squareup.moshi.JsonEncodingException
+import okio.IOException
+import retrofit2.HttpException
 import ua.cn.stu.http.app.model.BackendException
 import ua.cn.stu.http.app.model.ConnectionException
 import ua.cn.stu.http.app.model.ParseBackendResponseException
 
-// todo #4: add property for accessing Retrofit instance and implement
-//          wrapRetrofitExceptions() method.
 open class BaseRetrofitSource(
     retrofitConfig: RetrofitConfig
 ) {
 
-    /**
-     * Map network and parse exceptions into in-app exceptions.
-     * @throws BackendException
-     * @throws ParseBackendResponseException
-     * @throws ConnectionException
-     */
+    val retrofit = retrofitConfig.retrofit
+    val adapter = retrofitConfig.moshi.adapter(ErrorResponseBody::class.java)
+
     suspend fun <T> wrapRetrofitExceptions(block: suspend () -> T): T {
-        // execute 'block' passed to arguments and throw:
-        // - BackendException with code and message if server has returned error response
-        // - ParseBackendResponseException if server response can't be parsed
-        // - ConnectionException if HTTP request has failed
-        TODO()
+        return try {
+            block()
+        } catch (e: JsonDataException) {
+            throw ParseBackendResponseException(e)
+        } catch (e: JsonEncodingException) {
+            throw ParseBackendResponseException(e)
+        } catch (e: HttpException) {
+            throw createBackendException(e)
+        } catch (e: IOException) {
+            throw ConnectionException(e)
+        }
     }
 
+    private fun createBackendException(e: HttpException): Exception {
+        return try {
+            val errorBody = adapter.fromJson(
+                e.response()!!.errorBody()!!.string()
+            )!!
+            BackendException(e.code(), errorBody.error)
+        } catch (e: Exception) {
+            throw ParseBackendResponseException(e)
+        }
+    }
+
+    class ErrorResponseBody(
+        val error: String
+    )
 }
