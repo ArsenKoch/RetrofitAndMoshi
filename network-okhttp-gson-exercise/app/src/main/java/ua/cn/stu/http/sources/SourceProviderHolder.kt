@@ -37,8 +37,6 @@ object SourceProviderHolder {
     }
 
     private fun createLoggingInterceptor(): Interceptor {
-        return HttpLoggingInterceptor()
-
-        TODO("#9: create HttpLoggingInterceptor")
+        return HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
     }
 }
