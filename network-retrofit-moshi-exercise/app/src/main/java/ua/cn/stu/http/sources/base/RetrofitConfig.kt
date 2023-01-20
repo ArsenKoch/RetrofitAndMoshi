@@ -1,8 +1,10 @@
 package ua.cn.stu.http.sources.base
 
-/**
- * All stuffs required for making HTTP-requests with Retrofit client and
- * for parsing JSON-messages.
- */
-// todo #3: add Retrofit client and Moshi parser.
-class RetrofitConfig
+import com.squareup.moshi.Moshi
+import retrofit2.Retrofit
+
+
+class RetrofitConfig(
+    val retrofit: Retrofit,
+    val moshi: Moshi,
+)

@@ -34,7 +34,7 @@ object SourceProviderHolder {
             val newBuilder = chain.request().newBuilder()
             val token = settings.getCurrentToken()
             if (token != null) {
-                newBuilder.addHeader("Autorization", token)
+                newBuilder.addHeader("Authorization", token)
             }
             return@Interceptor chain.proceed(newBuilder.build())
         }
