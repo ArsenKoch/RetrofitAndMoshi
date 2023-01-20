@@ -3,7 +3,9 @@ package ua.cn.stu.http.sources
 import com.google.gson.Gson
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import ua.cn.stu.http.app.Const
+import ua.cn.stu.http.app.Singletons
 import ua.cn.stu.http.app.model.SourcesProvider
 import ua.cn.stu.http.app.model.settings.AppSettings
 import ua.cn.stu.http.sources.base.OkHttpConfig
@@ -21,11 +23,10 @@ object SourceProviderHolder {
     }
 
     private fun createOkHttpClient(): OkHttpClient {
-        TODO(
-            "#11: create OkHttpClient by using OkHttpClient.Builder. " +
-                    "Add 2 interceptors: for authorization and for logging requests."
-        )
-        // Hint: use 'Singletons.appSettings' as an implementation of AppSettings interface.
+        return OkHttpClient.Builder()
+            .addInterceptor(createAuthorizationInterceptor(Singletons.appSettings))
+            .addInterceptor(createLoggingInterceptor())
+            .build()create OkHttpClient by using OkHttpClient.Builder
     }
 
     private fun createAuthorizationInterceptor(settings: AppSettings): Interceptor {
@@ -36,6 +37,7 @@ object SourceProviderHolder {
     }
 
     private fun createLoggingInterceptor(): Interceptor {
+        return HttpLoggingInterceptor()
 
         TODO("#9: create HttpLoggingInterceptor")
     }
