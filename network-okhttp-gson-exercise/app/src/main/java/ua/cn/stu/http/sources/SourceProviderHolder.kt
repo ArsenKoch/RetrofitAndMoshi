@@ -26,7 +26,7 @@ object SourceProviderHolder {
         return OkHttpClient.Builder()
             .addInterceptor(createAuthorizationInterceptor(Singletons.appSettings))
             .addInterceptor(createLoggingInterceptor())
-            .build()create OkHttpClient by using OkHttpClient.Builder
+            .build()
     }
 
     private fun createAuthorizationInterceptor(settings: AppSettings): Interceptor {
