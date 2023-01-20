@@ -30,10 +30,14 @@ object SourceProviderHolder {
     }
 
     private fun createAuthorizationInterceptor(settings: AppSettings): Interceptor {
-        TODO(
-            "#10: create an Interceptor which adds Authorization header if " +
-                    "there is a token in the app settings"
-        )
+        return Interceptor { chain ->
+            val newBuilder = chain.request().newBuilder()
+            val token = settings.getCurrentToken()
+            if (token != null) {
+                newBuilder.addHeader("Autorization", token)
+            }
+            return@Interceptor chain.proceed(newBuilder.build())
+        }
     }
 
     private fun createLoggingInterceptor(): Interceptor {
