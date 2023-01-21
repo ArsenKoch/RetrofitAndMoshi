@@ -10,8 +10,6 @@ import ua.cn.stu.http.sources.base.BaseRetrofitSource
 import ua.cn.stu.http.sources.base.RetrofitConfig
 
 // todo #7: implement AccountSource methods:
-//          - signUp -> should call ' POST /sign-up'
-//          - getAccount -> should call 'GET /me' and return account data
 //          - setUsername -> should call 'PUT /me'
 class RetrofitAccountsSource(
     config: RetrofitConfig
@@ -21,7 +19,7 @@ class RetrofitAccountsSource(
 
     override suspend fun signIn(
         email: String, password: String
-    ): String = wrapRetrofitExceptions{
+    ): String = wrapRetrofitExceptions {
         delay(1000)
         val signIn = SignInRequestEntity(
             email = email,
@@ -32,7 +30,7 @@ class RetrofitAccountsSource(
 
     override suspend fun signUp(
         signUpData: SignUpData
-    ) {
+    ) = wrapRetrofitExceptions {
         delay(1000)
         val signUp = SignUpRequestEntity(
             email = signUpData.email,
@@ -42,10 +40,11 @@ class RetrofitAccountsSource(
         accountsApi.signUp(signUp)
     }
 
-    override suspend fun getAccount(): Account {
+    override suspend fun getAccount(): Account = wrapRetrofitExceptions {
         delay(1000)
-        TODO()
+        accountsApi.getAccount().toAccount()
     }
+
 
     override suspend fun setUsername(
         username: String
