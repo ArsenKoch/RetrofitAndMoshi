@@ -1,6 +1,7 @@
 package ua.cn.stu.http.sources.boxes
 
 import kotlinx.coroutines.delay
+import retrofit2.create
 import ua.cn.stu.http.app.model.boxes.BoxesSource
 import ua.cn.stu.http.app.model.boxes.entities.BoxAndSettings
 import ua.cn.stu.http.app.model.boxes.entities.BoxesFilter
@@ -16,11 +17,14 @@ class RetrofitBoxesSource(
     config: RetrofitConfig
 ) : BaseRetrofitSource(config), BoxesSource {
 
+    private val boxesApi = retrofit.create(BoxesApi::class.java)
+
     override suspend fun setIsActive(
         boxId: Long,
         isActive: Boolean
-    ) {
-        TODO()
+    ) = wrapRetrofitExceptions {
+        val updateBoxRequestEntity = UpdateBoxRequestEntity(isActive)
+        boxesApi.setIsActive(boxId, updateBoxRequestEntity)
     }
 
     override suspend fun getBoxes(
