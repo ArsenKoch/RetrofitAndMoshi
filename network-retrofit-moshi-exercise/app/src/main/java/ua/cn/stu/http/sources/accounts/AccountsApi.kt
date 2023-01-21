@@ -4,15 +4,12 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
-import ua.cn.stu.http.sources.accounts.entities.GetAccountResponseEntity
-import ua.cn.stu.http.sources.accounts.entities.SignInRequestEntity
-import ua.cn.stu.http.sources.accounts.entities.SignUpRequestEntity
-import ua.cn.stu.http.sources.accounts.entities.UpdateUsernameRequestEntity
+import ua.cn.stu.http.sources.accounts.entities.*
 
 interface AccountsApi {
 
     @POST("sign-in")
-    suspend fun signIn(@Body signInRequestEntity: SignInRequestEntity): SignInRequestEntity
+    suspend fun signIn(@Body signInRequestEntity: SignInRequestEntity): SignInResponseEntity
 
     @POST("sign-up")
     suspend fun signUp(@Body signUpRequestEntity: SignUpRequestEntity)
