@@ -5,6 +5,7 @@ import ua.cn.stu.http.app.model.accounts.AccountsSource
 import ua.cn.stu.http.app.model.accounts.entities.Account
 import ua.cn.stu.http.app.model.accounts.entities.SignUpData
 import ua.cn.stu.http.sources.accounts.entities.SignInRequestEntity
+import ua.cn.stu.http.sources.accounts.entities.SignUpRequestEntity
 import ua.cn.stu.http.sources.base.BaseRetrofitSource
 import ua.cn.stu.http.sources.base.RetrofitConfig
 
@@ -33,7 +34,12 @@ class RetrofitAccountsSource(
         signUpData: SignUpData
     ) {
         delay(1000)
-        TODO()
+        val signUp = SignUpRequestEntity(
+            email = signUpData.email,
+            username = signUpData.username,
+            password = signUpData.password
+        )
+        accountsApi.signUp(signUp)
     }
 
     override suspend fun getAccount(): Account {
