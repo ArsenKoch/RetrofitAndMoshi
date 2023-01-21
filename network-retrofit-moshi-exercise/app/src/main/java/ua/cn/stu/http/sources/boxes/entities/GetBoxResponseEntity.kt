@@ -46,5 +46,4 @@ data class GetBoxResponseEntity(
         ),
         isActive = isActive
     )
-
 }
