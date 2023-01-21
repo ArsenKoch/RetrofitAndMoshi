@@ -6,11 +6,10 @@ import ua.cn.stu.http.app.model.accounts.entities.Account
 import ua.cn.stu.http.app.model.accounts.entities.SignUpData
 import ua.cn.stu.http.sources.accounts.entities.SignInRequestEntity
 import ua.cn.stu.http.sources.accounts.entities.SignUpRequestEntity
+import ua.cn.stu.http.sources.accounts.entities.UpdateUsernameRequestEntity
 import ua.cn.stu.http.sources.base.BaseRetrofitSource
 import ua.cn.stu.http.sources.base.RetrofitConfig
 
-// todo #7: implement AccountSource methods:
-//          - setUsername -> should call 'PUT /me'
 class RetrofitAccountsSource(
     config: RetrofitConfig
 ) : BaseRetrofitSource(config), AccountsSource {
@@ -48,9 +47,9 @@ class RetrofitAccountsSource(
 
     override suspend fun setUsername(
         username: String
-    ) {
+    ) = wrapRetrofitExceptions {
         delay(1000)
-        TODO()
+        val updateUsernameRequestEntity = UpdateUsernameRequestEntity(username)
+        accountsApi.setUsername(updateUsernameRequestEntity)
     }
-
 }
